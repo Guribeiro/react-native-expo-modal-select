@@ -1,3 +1,3 @@
-export function multiply(a: number, b: number): Promise<number> {
-  return Promise.resolve(a * b);
-}
+import ModalSelect, { Item, ModalSelectProps } from './components/ModalSelect';
+
+export { ModalSelect, Item, ModalSelectProps };
