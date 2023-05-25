@@ -1,23 +1,24 @@
-# react-native-modal-select
+# react-native-expo-modal-select
 
 This is customizable Modal Select for your React Native and Expo application.
 
 ## Installation
 
 ```
-npm install react-native-modal-select
+npm install react-native-expo-modal-select
 ```
 or
 ```
-yarn add react-native-modal-select
+yarn add react-native-expo-modal-select
 ```
+
 
 ## Usage
 
 ```js
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import ModalSelect, { Item } from 'react-native-modal-select';
+import ModalSelect, { Item } from 'react-native-expo-modal-select';
 
 const countries: Item[] = [
   {
@@ -34,16 +35,16 @@ const countries: Item[] = [
   },
 ];
 
-export default function App() {
-  const [selectedItem, setSelectedItem] = useState('');
+export default function Select() {
+  const [country, setCountry] = useState('');
   return (
     <View style={styles.container}>
       <ModalSelect
         label="country"
         placeholder="Select your country"
         items={countries}
-        value={selectedItem}
-        onChange={(item) => setSelectedItem(item)}
+        value={country}
+        onChange={(value) => setCountry(value)}
       />
     </View>
   );
@@ -85,16 +86,16 @@ display `*` for required fields
 
 | Type  | Required | Default |
 | ----- | -------- | ------- |
-| boolean | No     | undefined |
+| boolean | No     | false |
 
 ---
 
 ### items
 array of `Item` that will be represented in modal as all the options that could be selected
 
-| Type  | Required |
-| ----- | -------- |
-| array | Yes      |
+| Type  | Required | Default |
+| ----- | -------- | ------- |
+| array | Yes      |         |
 
 ---
 

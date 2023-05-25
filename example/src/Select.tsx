@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import ModalSelect, { Item } from '../../src/index';
+import ModalSelect, { Item } from 'react-native-expo-modal-select';
 
 const countries: Item[] = [
   {
@@ -18,15 +18,15 @@ const countries: Item[] = [
 ];
 
 export default function Select() {
-  const [selectedItem, setSelectedItem] = useState('');
+  const [country, setCountry] = useState('');
   return (
     <View style={styles.container}>
       <ModalSelect
         label="country"
         placeholder="Select your country"
         items={countries}
-        value={selectedItem}
-        onChange={(item) => setSelectedItem(item)}
+        value={country}
+        onChange={(value) => setCountry(value)}
       />
     </View>
   );
