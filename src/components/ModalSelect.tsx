@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import type { StyleObj } from 'src/@types/StyleObj';
+import EmptyIndicator from './EmptyIndicator';
 import SelectItem from './Item';
 
 export interface Item {
@@ -18,6 +19,7 @@ export interface Item {
 }
 
 export interface ModalSelectProps {
+  testID?: string;
   label?: string;
   required?: boolean;
   error?: string;
@@ -26,60 +28,18 @@ export interface ModalSelectProps {
   placeholder?: string;
   style?: StyleObj;
   touchableStyle?: StyleObj;
+  touchableTextStyle?: StyleObj;
+  errorTextStyle?: StyleObj;
   labelStyle?: StyleObj;
+  showErrorMessage?: boolean;
   onChange: (value: string) => void;
   cancelTouchableText?: string;
+  emptyIndicatorText?: string;
+  errorColor?: string;
 }
 
-const styles = StyleSheet.create({
-  label: {
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    fontSize: 10,
-    left: 0,
-    paddingBottom: 4,
-  },
-  touchable: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 56,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderStyle: 'solid',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    padding: 16,
-  },
-  closeModalText: {
-    fontSize: 20,
-  },
-  cancelModalText: {
-    color: '#e74c3c',
-    fontSize: 16,
-  },
-  modalTitleContainer: {
-    position: 'absolute',
-    alignItems: 'center',
-    left: 0,
-    right: 0,
-  },
-  error: {
-    position: 'absolute',
-    textTransform: 'uppercase',
-    top: -12,
-    letterSpacing: 1,
-    fontSize: 10,
-    right: 0,
-    color: 'red',
-  },
-});
-
 const ModalSelect = ({
+  testID,
   label,
   error,
   required,
@@ -88,26 +48,106 @@ const ModalSelect = ({
   placeholder,
   labelStyle,
   touchableStyle,
+  touchableTextStyle,
+  errorTextStyle,
   cancelTouchableText = 'Cancel',
+  emptyIndicatorText = 'Sorry, there is nothing to be shown here',
+  showErrorMessage = true,
+  errorColor = '#e74c3c',
 }: ModalSelectProps): JSX.Element => {
-  const touchableStyleSheet = useMemo(() => {
-    if (error)
-      return [
-        styles.touchable,
-        touchableStyle,
-        {
-          borderColor: 'red',
-        },
-      ];
-    return [styles.touchable, touchableStyle];
-  }, [error, touchableStyle]);
-
-  const labelStyleSheet = useMemo(() => {
-    return [styles.label, labelStyle];
-  }, [labelStyle]);
-
   const [modalVisibility, setModalVisibility] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | undefined>();
+
+  const styles = useMemo(() => {
+    return StyleSheet.create({
+      label: {
+        textTransform: 'uppercase',
+        letterSpacing: 1,
+        fontSize: 10,
+        left: 0,
+        paddingBottom: 4,
+      },
+      touchable: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 20,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: '#000',
+        borderStyle: 'solid',
+      },
+      touchableText: {
+        fontSize: 14,
+      },
+      modalHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        padding: 16,
+      },
+      closeModalText: {
+        fontSize: 20,
+      },
+      cancelModalText: {
+        color: `${errorColor}`,
+        fontSize: 16,
+      },
+      modalTitleContainer: {
+        position: 'absolute',
+        alignItems: 'center',
+        left: 0,
+        right: 0,
+      },
+      error: {
+        position: 'absolute',
+        textTransform: 'uppercase',
+        letterSpacing: 1,
+        fontSize: 10,
+        right: 0,
+        color: `${errorColor}`,
+      },
+    });
+  }, [errorColor]);
+
+  const touchableStyleSheet = useMemo(() => {
+    return error
+      ? [
+          styles.touchable,
+          touchableStyle,
+          {
+            borderColor: `${errorColor}`,
+          },
+        ]
+      : [styles.touchable, touchableStyle];
+  }, [error, touchableStyle, styles.touchable, errorColor]);
+
+  const labelStyleSheet = useMemo(() => {
+    return error
+      ? [
+          styles.label,
+          labelStyle,
+          {
+            color: `${errorColor}`,
+          },
+        ]
+      : [styles.label, labelStyle];
+  }, [styles.label, labelStyle, error, errorColor]);
+
+  const touchableTextStyleSheet = useMemo(() => {
+    return error
+      ? [
+          styles.touchableText,
+          touchableTextStyle,
+          {
+            color: `${errorColor}`,
+          },
+        ]
+      : [styles.touchableText, touchableTextStyle];
+  }, [styles.touchableText, touchableTextStyle, error, errorColor]);
+
+  const errorTextStyleSheet = useMemo(() => {
+    return [styles.error, errorTextStyle];
+  }, [styles.error, errorTextStyle]);
 
   const handleChangeSelectedItem = useCallback(
     (item: Item) => {
@@ -124,8 +164,10 @@ const ModalSelect = ({
   };
 
   return (
-    <View>
-      {error && <Text style={styles.error}>{error}</Text>}
+    <View testID={testID}>
+      {error && showErrorMessage && (
+        <Text style={errorTextStyleSheet}>{error}</Text>
+      )}
       <Text style={labelStyleSheet}>
         {label}
         {label && required && '*'}
@@ -135,7 +177,9 @@ const ModalSelect = ({
         style={touchableStyleSheet}
         onPress={() => setModalVisibility(true)}
       >
-        <Text>{selectedItem ? selectedItem.label : placeholder}</Text>
+        <Text style={touchableTextStyleSheet}>
+          {selectedItem ? selectedItem.label : placeholder}
+        </Text>
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -148,7 +192,6 @@ const ModalSelect = ({
               <Text>{selectedItem ? selectedItem.label : placeholder}</Text>
             </View>
             <TouchableOpacity onPress={() => setModalVisibility(false)}>
-              {/* <Icon name="x" /> */}
               <Text style={styles.closeModalText}>X</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleCancel}>
@@ -156,20 +199,26 @@ const ModalSelect = ({
             </TouchableOpacity>
           </View>
         </SafeAreaView>
-        <FlatList
-          data={items}
-          renderItem={(info) => {
-            const { item } = info;
-            return (
-              <SelectItem
-                key={item.value}
-                selected={item.value === selectedItem?.value}
-                onPress={() => handleChangeSelectedItem(item)}
-                {...item}
-              />
-            );
-          }}
-        />
+        {!items.length ? (
+          <EmptyIndicator>
+            <Text>{emptyIndicatorText}</Text>
+          </EmptyIndicator>
+        ) : (
+          <FlatList
+            data={items}
+            renderItem={(info) => {
+              const { item } = info;
+              return (
+                <SelectItem
+                  key={item.value}
+                  selected={item.value === selectedItem?.value}
+                  onPress={() => handleChangeSelectedItem(item)}
+                  {...item}
+                />
+              );
+            }}
+          />
+        )}
       </Modal>
     </View>
   );

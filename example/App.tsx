@@ -25,7 +25,7 @@ export default function App() {
       <ModalSelect
         label="label"
         required
-        placeholder="Select an item..."
+        placeholder="Selecione uma opção"
         items={items}
         value={selectedItem}
         onChange={(item) => setSelectedItem(item)}
