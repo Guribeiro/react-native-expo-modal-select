@@ -21,39 +21,38 @@ export interface Item {
 export interface ModalSelectProps {
   testID?: string;
   label?: string;
-  required?: boolean;
   error?: string;
+  showErrorMessage?: boolean;
+  errorColor?: string;
+  required?: boolean;
+  placeholder?: string;
   items: Item[];
   value: string;
-  placeholder?: string;
-  style?: StyleObj;
+  labelStyle?: StyleObj;
   touchableStyle?: StyleObj;
   touchableTextStyle?: StyleObj;
   errorTextStyle?: StyleObj;
-  labelStyle?: StyleObj;
-  showErrorMessage?: boolean;
-  onChange: (value: string) => void;
   cancelTouchableText?: string;
   emptyIndicatorText?: string;
-  errorColor?: string;
+  onChange: (value: string) => void;
 }
 
 const ModalSelect = ({
   testID,
   label,
   error,
+  showErrorMessage = true,
+  errorColor = '#e74c3c',
   required,
-  onChange,
-  items,
   placeholder,
+  items,
   labelStyle,
   touchableStyle,
   touchableTextStyle,
   errorTextStyle,
   cancelTouchableText = 'Cancel',
   emptyIndicatorText = 'Sorry, there is nothing to be shown here',
-  showErrorMessage = true,
-  errorColor = '#e74c3c',
+  onChange,
 }: ModalSelectProps): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | undefined>();
@@ -166,7 +165,9 @@ const ModalSelect = ({
   return (
     <View testID={testID}>
       {error && showErrorMessage && (
-        <Text style={errorTextStyleSheet}>{error}</Text>
+        <Text testID="text-error" style={errorTextStyleSheet}>
+          {error}
+        </Text>
       )}
       <Text style={labelStyleSheet}>
         {label}
@@ -177,7 +178,7 @@ const ModalSelect = ({
         style={touchableStyleSheet}
         onPress={() => setModalVisibility(true)}
       >
-        <Text style={touchableTextStyleSheet}>
+        <Text testID="text-placeholder" style={touchableTextStyleSheet}>
           {selectedItem ? selectedItem.label : placeholder}
         </Text>
       </TouchableOpacity>
