@@ -27,20 +27,6 @@ export default function Select() {
         items={countries}
         value={country}
         onChange={(value) => setCountry(value)}
-        modalTitleStyle={{
-          fontSize: 16,
-          color: '#FFF',
-        }}
-        modalStyle={{
-          backgroundColor: '#29292E',
-        }}
-        itemTouchableStyle={{
-          selectedColor: '#34343a',
-        }}
-        itemTextStyle={{
-          color: '#FFF',
-          selectedColor: '#CCC',
-        }}
       />
     </View>
   );
