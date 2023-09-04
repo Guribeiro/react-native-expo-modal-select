@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import ModalSelect, { Item } from 'react-native-expo-modal-select';
+import ModalSelect, { Item } from '../../src/index';
 
 const countries: Item[] = [
   {
@@ -27,6 +27,20 @@ export default function Select() {
         items={countries}
         value={country}
         onChange={(value) => setCountry(value)}
+        modalTitleStyle={{
+          fontSize: 16,
+          color: '#FFF',
+        }}
+        modalStyle={{
+          backgroundColor: '#29292E',
+        }}
+        itemTouchableStyle={{
+          selectedColor: '#34343a',
+        }}
+        itemTextStyle={{
+          color: '#FFF',
+          selectedColor: '#CCC',
+        }}
       />
     </View>
   );

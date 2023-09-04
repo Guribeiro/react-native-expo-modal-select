@@ -135,6 +135,24 @@ style object for text inside touchable
 
 ---
 
+### itemTouchableStyle
+style object for select item touchable
+
+| Type     | Required | Default |
+| -------- | -------- | ------- |
+| object   | No       | undefined |
+
+---
+
+### itemTextStyle
+style object for select item text
+
+| Type     | Required | Default |
+| -------- | -------- | ------- |
+| object   | No       | undefined |
+
+---
+
 ### errorTextStyle
 style object for error text
 
@@ -146,6 +164,24 @@ style object for error text
 
 ### labelStyle
 style object for label text
+
+| Type     | Required | Default |
+| -------- | -------- | ------- |
+| object   | No       | undefined |
+
+---
+
+### modalStyle
+style object for customizing modal
+
+| Type     | Required | Default |
+| -------- | -------- | ------- |
+| object   | No       | undefined |
+
+---
+
+### modalTitleStyle
+style object for modal title text
 
 | Type     | Required | Default |
 | -------- | -------- | ------- |
@@ -168,6 +204,15 @@ defines the error used when has an error
 | Type     | Required | Default |
 | -------- | -------- | ------- |
 | string   | No       | #e74c3c |
+
+---
+
+### closeTextStyle
+style object for modal close button text
+
+| Type     | Required | Default |
+| -------- | -------- | ------- |
+| object   | No       | undefined |
 
 ---
 

@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 
-import type { StyleObj } from 'src/@types/StyleObj';
+import type { StyleObj } from '../@types/StyleObj';
 import EmptyIndicator from './EmptyIndicator';
 import SelectItem from './Item';
 
@@ -30,9 +30,14 @@ export interface ModalSelectProps {
   value: string;
   labelStyle?: StyleObj;
   touchableStyle?: StyleObj;
+  itemTouchableStyle?: StyleObj & { selectedColor?: string };
+  itemTextStyle?: StyleObj & { selectedColor?: string };
   touchableTextStyle?: StyleObj;
+  modalStyle?: StyleObj;
+  modalTitleStyle?: StyleObj;
   errorTextStyle?: StyleObj;
   cancelTouchableText?: string;
+  closeTextStyle?: StyleObj;
   emptyIndicatorText?: string;
   onChange: (value: string) => void;
 }
@@ -49,8 +54,13 @@ const ModalSelect = ({
   labelStyle,
   touchableStyle,
   touchableTextStyle,
+  itemTouchableStyle,
+  itemTextStyle,
+  modalStyle,
+  modalTitleStyle,
   errorTextStyle,
   cancelTouchableText = 'Cancel',
+  closeTextStyle,
   emptyIndicatorText = 'Sorry, there is nothing to be shown here',
   onChange,
 }: ModalSelectProps): JSX.Element => {
@@ -187,39 +197,47 @@ const ModalSelect = ({
         visible={modalVisibility}
         onRequestClose={() => setModalVisibility(false)}
       >
-        <SafeAreaView>
-          <View style={styles.modalHeader}>
-            <View style={styles.modalTitleContainer}>
-              <Text>{selectedItem ? selectedItem.label : placeholder}</Text>
+        <View style={[{ flex: 1 }, modalStyle]}>
+          <SafeAreaView>
+            <View style={styles.modalHeader}>
+              <View style={styles.modalTitleContainer}>
+                <Text style={modalTitleStyle}>
+                  {selectedItem ? selectedItem.label : placeholder}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => setModalVisibility(false)}>
+                <Text style={[styles.closeModalText, closeTextStyle]}>X</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleCancel}>
+                <Text style={styles.cancelModalText}>
+                  {cancelTouchableText}
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => setModalVisibility(false)}>
-              <Text style={styles.closeModalText}>X</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleCancel}>
-              <Text style={styles.cancelModalText}>{cancelTouchableText}</Text>
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
-        {!items.length ? (
-          <EmptyIndicator>
-            <Text>{emptyIndicatorText}</Text>
-          </EmptyIndicator>
-        ) : (
-          <FlatList
-            data={items}
-            renderItem={(info) => {
-              const { item } = info;
-              return (
-                <SelectItem
-                  key={item.value}
-                  selected={item.value === selectedItem?.value}
-                  onPress={() => handleChangeSelectedItem(item)}
-                  {...item}
-                />
-              );
-            }}
-          />
-        )}
+          </SafeAreaView>
+          {!items.length ? (
+            <EmptyIndicator>
+              <Text>{emptyIndicatorText}</Text>
+            </EmptyIndicator>
+          ) : (
+            <FlatList
+              data={items}
+              renderItem={(info) => {
+                const { item } = info;
+                return (
+                  <SelectItem
+                    key={item.value}
+                    selected={item.value === selectedItem?.value}
+                    onPress={() => handleChangeSelectedItem(item)}
+                    itemTouchableStyle={itemTouchableStyle}
+                    itemTextStyle={itemTextStyle}
+                    {...item}
+                  />
+                );
+              }}
+            />
+          )}
+        </View>
       </Modal>
     </View>
   );
