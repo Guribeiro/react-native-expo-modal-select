@@ -51,6 +51,7 @@ const ModalSelect = ({
   required,
   placeholder,
   items,
+  value,
   labelStyle,
   touchableStyle,
   touchableTextStyle,
@@ -65,7 +66,9 @@ const ModalSelect = ({
   onChange,
 }: ModalSelectProps): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<Item | undefined>();
+  const [selectedItem, setSelectedItem] = useState<Item | undefined>(
+    items.find((item) => item.value === value)
+  );
 
   const styles = useMemo(() => {
     return StyleSheet.create({
