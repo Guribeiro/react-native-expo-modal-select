@@ -38,6 +38,7 @@ export interface ModalSelectProps {
   errorTextStyle?: StyleObj;
   cancelTouchableText?: string;
   closeTextStyle?: StyleObj;
+  cancelTextStyle?: StyleObj;
   emptyIndicatorText?: string;
   onChange: (value: string) => void;
 }
@@ -62,6 +63,7 @@ const ModalSelect = ({
   errorTextStyle,
   cancelTouchableText = 'Cancel',
   closeTextStyle,
+  cancelTextStyle,
   emptyIndicatorText = 'Sorry, there is nothing to be shown here',
   onChange,
 }: ModalSelectProps): JSX.Element => {
@@ -212,7 +214,7 @@ const ModalSelect = ({
                 <Text style={[styles.closeModalText, closeTextStyle]}>X</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleCancel}>
-                <Text style={styles.cancelModalText}>
+                <Text style={[styles.cancelModalText, cancelTextStyle]}>
                   {cancelTouchableText}
                 </Text>
               </TouchableOpacity>
