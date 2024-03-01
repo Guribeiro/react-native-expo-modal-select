@@ -38,6 +38,7 @@ export interface ModalSelectProps {
   errorTextStyle?: StyleObj;
   cancelTouchableText?: string;
   closeTextStyle?: StyleObj;
+  cancelTextStyle?: StyleObj;
   emptyIndicatorText?: string;
   onChange: (value: string) => void;
 }
@@ -61,11 +62,15 @@ const ModalSelect = ({
   errorTextStyle,
   cancelTouchableText = 'Cancel',
   closeTextStyle,
+  cancelTextStyle,
   emptyIndicatorText = 'Sorry, there is nothing to be shown here',
   onChange,
+  value,
 }: ModalSelectProps): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<Item | undefined>();
+  const [selectedItem, setSelectedItem] = useState<Item | undefined>(
+    items.find((item) => item.value === value)
+  );
 
   const styles = useMemo(() => {
     return StyleSheet.create({
@@ -209,7 +214,7 @@ const ModalSelect = ({
                 <Text style={[styles.closeModalText, closeTextStyle]}>X</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleCancel}>
-                <Text style={styles.cancelModalText}>
+                <Text style={[styles.cancelModalText, cancelTextStyle]}>
                   {cancelTouchableText}
                 </Text>
               </TouchableOpacity>
