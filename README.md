@@ -216,6 +216,15 @@ style object for modal close button text
 
 ---
 
+### cancelTextStyle
+style object for modal cancel button text
+
+| Type     | Required | Default |
+| -------- | -------- | ------- |
+| object   | No       | undefined |
+
+---
+
 ### cancelTouchableText
 text that will be displayed inside the cancel touchable
 
