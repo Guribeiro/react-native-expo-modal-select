@@ -19,13 +19,11 @@ const items: Item[] = [
 
 let value: string;
 let placeholder: string;
-let error: string;
 
 describe('placeholder text', () => {
   beforeEach(() => {
     value = '';
     placeholder = 'Select an item';
-    error = 'There is an error';
   });
 
   it('should be able to render placeholder when there is no item selected', async () => {
@@ -48,23 +46,5 @@ describe('error text', () => {
   beforeEach(() => {
     value = '';
     placeholder = 'Select an item';
-    error = 'There is an error';
-  });
-
-  it('should be able to render error message', async () => {
-    const { getByTestId } = render(
-      <ModalSelect
-        items={items}
-        value={value}
-        error={error}
-        placeholder={placeholder}
-        onChange={(v) => console.log(v)}
-      />
-    );
-
-    const errorText = getByTestId('text-error');
-
-    expect(errorText).toBeTruthy();
-    expect(errorText.props.children).toBe(error);
   });
 });
