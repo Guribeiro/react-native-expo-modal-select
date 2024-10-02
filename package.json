@@ -89,7 +89,7 @@
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "^yarn@1.22.15",
+  "packageManager": "^yarn@1.22.22",
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -124,7 +124,6 @@
         {
           "quoteProps": "consistent",
           "singleQuote": true,
-          "tabWidth": 2,
           "trailingComma": "es5",
           "useTabs": false
         }
@@ -138,7 +137,6 @@
   "prettier": {
     "quoteProps": "consistent",
     "singleQuote": true,
-    "tabWidth": 2,
     "trailingComma": "es5",
     "useTabs": false
   },

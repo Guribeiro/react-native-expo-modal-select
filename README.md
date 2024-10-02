@@ -7,11 +7,12 @@ This is customizable Modal Select for your React Native and Expo application.
 ```
 npm install react-native-expo-modal-select
 ```
+
 or
+
 ```
 yarn add react-native-expo-modal-select
 ```
-
 
 ## Usage
 
@@ -58,189 +59,167 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
   },
 });
-
 ```
 
 ## Reference
 
 ### testID
+
 id for testing
 
-| Type  | Required | Default |
-| ----- | -------- | ------- |
-| string | No      | undefined |
-
----
-
-### label
-display a text label for describing the select component
-
-| Type  | Required | Default |
-| ----- | -------- | ------- |
-| string | No      | undefined |
-
----
-
-### required
-display `*` for required fields
-
-| Type  | Required | Default |
-| ----- | -------- | ------- |
-| boolean | No     | false |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| string | No       | undefined |
 
 ---
 
 ### items
+
 array of `Item` that will be represented in modal as all the options that could be selected
 
 | Type  | Required | Default |
 | ----- | -------- | ------- |
-| array | Yes      |         |
+| array | Yes      | []      |
 
 ---
 
 ### value
+
 selected item in modal select
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| string   | Yes      |         |
+| Type   | Required | Default |
+| ------ | -------- | ------- |
+| string | Yes      |         |
 
 ---
 
 ### placeholder
+
 text that will be displayed inside the touchable
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| string   | No       | undefined |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| string | No       | undefined |
 
 ---
 
 ### touchableStyle
+
 style object for touchable
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| object | No       | undefined |
 
 ---
 
 ### touchableTextStyle
+
 style object for text inside touchable
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| object | No       | undefined |
 
 ---
 
 ### itemTouchableStyle
+
 style object for select item touchable
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| object | No       | undefined |
 
 ---
 
 ### itemTextStyle
+
 style object for select item text
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
-
----
-
-### errorTextStyle
-style object for error text
-
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
-
----
-
-### labelStyle
-style object for label text
-
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| object | No       | undefined |
 
 ---
 
 ### modalStyle
+
 style object for customizing modal
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| object | No       | undefined |
 
 ---
 
 ### modalTitleStyle
+
 style object for modal title text
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
-
----
-
-### showErrorMessage
-when false, hide the error message keeping the error style.
-
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| boolean  | No       | true    |
-
----
-
-### errorColor
-defines the error used when has an error
-
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| string   | No       | #e74c3c |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| object | No       | undefined |
 
 ---
 
 ### closeTextStyle
+
 style object for modal close button text
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| object | No       | undefined |
+
+---
+
+### closeModalText
+
+style object for modal cancel button text
+
+| Type   | Required | Default |
+| ------ | -------- | ------- |
+| string | No       | Back    |
 
 ---
 
 ### cancelTextStyle
+
 style object for modal cancel button text
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| object   | No       | undefined |
+| Type   | Required | Default   |
+| ------ | -------- | --------- |
+| object | No       | undefined |
 
 ---
 
 ### cancelTouchableText
+
 text that will be displayed inside the cancel touchable
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
-| string   | No       | Cancel |
+| Type   | Required | Default |
+| ------ | -------- | ------- |
+| string | No       | Cancel  |
 
 ---
 
 ### emptyIndicatorText
+
 text that will be displayed inside the empty indicator
 
-| Type     | Required | Default |
-| -------- | -------- | ------- |
+| Type     | Required | Default                                  |
+| -------- | -------- | ---------------------------------------- |
 | function | Yes      | Sorry, there is nothing to be shown here |
 
+---
+
+### CloseModalComponent
+
+text that will be displayed inside the empty indicator
+
+| Type            | Required | Default   |
+| --------------- | -------- | --------- |
+| React Component | No       | undefined |
 
 ## Contributing
 

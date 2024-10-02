@@ -22,7 +22,6 @@ export default function Select() {
   return (
     <View style={styles.container}>
       <ModalSelect
-        label="country"
         placeholder="Select your country"
         items={countries}
         value={country}
