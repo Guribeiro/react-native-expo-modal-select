@@ -1,6 +1,6 @@
 {
   "name": "react-native-expo-modal-select",
-  "version": "0.1.6",
+  "version": "0.1.5",
   "description": "Select component with a fullscreen modal",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
