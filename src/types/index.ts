@@ -1,4 +1,4 @@
-import type { Modal, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 export type StyleObj = StyleProp<ViewStyle | TextStyle>;
 
