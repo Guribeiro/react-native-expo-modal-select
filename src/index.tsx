@@ -1,5 +1,5 @@
-import ModalSelect, { Item, ModalSelectProps } from './components/ModalSelect';
+export * from '@/types';
 
-export { Item, ModalSelectProps };
+import ModalSelect from '@/components/ModalSelect';
 
 export default ModalSelect;

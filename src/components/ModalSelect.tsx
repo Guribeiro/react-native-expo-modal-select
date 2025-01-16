@@ -1,119 +1,41 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   FlatList,
   Modal,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 
-import type { StyleObj } from '../@types/StyleObj';
+import React from 'react';
+import type { Item, ModalSelectProps } from 'src/types';
 import EmptyIndicator from './EmptyIndicator';
 import SelectItem from './Item';
-
-export interface Item {
-  label: string;
-  value: string;
-}
-
-export interface ModalSelectProps {
-  testID?: string;
-  placeholder?: string;
-  items: Item[];
-  value: string;
-  touchableStyle?: StyleObj;
-  itemTouchableStyle?: StyleObj & { selectedColor?: string };
-  itemTextStyle?: StyleObj & { selectedColor?: string };
-  touchableTextStyle?: StyleObj;
-  modalStyle?: StyleObj;
-  modalTitleStyle?: StyleObj;
-  cancelTouchableText?: string;
-  closeTextStyle?: StyleObj;
-  cancelTextStyle?: StyleObj;
-  emptyIndicatorText?: string;
-  closeModalText?: string;
-  onChange: (value: string) => void;
-  CloseModalComponent?:
-    | React.ComponentType<any>
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | null
-    | undefined;
-}
 
 const ModalSelect = ({
   testID,
   placeholder,
   items,
-  touchableStyle,
-  touchableTextStyle,
-  itemTouchableStyle,
-  itemTextStyle,
-  modalStyle,
-  modalTitleStyle,
-  cancelTouchableText = 'Cancel',
-  closeTextStyle,
-  cancelTextStyle,
+  cancelTouchableText = 'cancel',
   emptyIndicatorText = 'Sorry, there is nothing to be shown here',
   closeModalText = 'Back',
   onChange,
   value,
-  CloseModalComponent,
+  modalStyle,
+  closeModalComponent,
+  cancelModalComponent,
+  pressableComponent,
+  modalHeaderComponent,
+  emptyIndicatorComponent,
+  modalItemComponent,
 }: ModalSelectProps): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false);
+
   const [selectedItem, setSelectedItem] = useState<Item | undefined>(
     items.find((item) => item.value === value)
   );
-
-  const styles = StyleSheet.create({
-    touchable: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      padding: 20,
-      borderWidth: StyleSheet.hairlineWidth,
-    },
-    touchableText: {
-      fontSize: 14,
-    },
-    modal: {
-      flex: 1,
-    },
-    modalHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      width: '100%',
-      padding: 16,
-    },
-    closeModalText: {
-      fontSize: 16,
-    },
-    cancelModalText: {
-      fontSize: 16,
-    },
-    modalTitleContainer: {
-      position: 'absolute',
-      alignItems: 'center',
-      left: 0,
-      right: 0,
-    },
-    error: {
-      position: 'absolute',
-      textTransform: 'uppercase',
-      letterSpacing: 1,
-      fontSize: 10,
-      right: 0,
-    },
-  });
-
-  const touchableStyleSheet = useMemo(() => {
-    return [styles.touchable, touchableStyle];
-  }, [styles.touchable, touchableStyle]);
-
-  const touchableTextStyleSheet = useMemo(() => {
-    return [styles.touchableText, touchableTextStyle];
-  }, [styles.touchableText, touchableTextStyle]);
 
   const handleChangeSelectedItem = useCallback(
     (item: Item) => {
@@ -129,64 +51,104 @@ const ModalSelect = ({
     setModalVisibility(false);
   };
 
+  const modalStyles = useMemo(() => {
+    return [styles.modal, modalStyle];
+  }, [modalStyle]);
+
   return (
     <View testID={testID}>
-      <TouchableOpacity
-        style={touchableStyleSheet}
-        onPress={() => setModalVisibility(true)}
-      >
-        <Text testID="text-placeholder" style={touchableTextStyleSheet}>
-          {selectedItem ? selectedItem.label : placeholder}
-        </Text>
-      </TouchableOpacity>
+      {pressableComponent ? (
+        pressableComponent({
+          text: selectedItem ? selectedItem.label : placeholder,
+          onOpen: () => setModalVisibility(true),
+        })
+      ) : (
+        <Pressable onPress={() => setModalVisibility(true)}>
+          <Text testID="text-placeholder">
+            {selectedItem ? selectedItem.label : placeholder}
+          </Text>
+        </Pressable>
+      )}
+
       <Modal
         animationType="slide"
         visible={modalVisibility}
         onRequestClose={() => setModalVisibility(false)}
       >
-        <View style={[styles.modal, modalStyle]}>
+        <View style={modalStyles}>
           <SafeAreaView>
-            <View style={styles.modalHeader}>
-              <View style={styles.modalTitleContainer}>
-                <Text style={modalTitleStyle}>
-                  {selectedItem ? selectedItem.label : placeholder}
-                </Text>
-              </View>
-              <TouchableOpacity onPress={() => setModalVisibility(false)}>
-                {CloseModalComponent ? (
-                  CloseModalComponent
-                ) : (
-                  <Text style={[styles.closeModalText, closeTextStyle]}>
-                    {closeModalText}
+            {modalHeaderComponent ? (
+              modalHeaderComponent({
+                onClose: () => setModalVisibility(false),
+                onCancel: handleCancel,
+                title: selectedItem ? selectedItem.label : placeholder,
+              })
+            ) : (
+              <View style={styles.modalHeader}>
+                <View style={styles.modalTitleContainer}>
+                  <Text>
+                    {selectedItem ? selectedItem.label : placeholder}{' '}
                   </Text>
+                </View>
+                {closeModalComponent ? (
+                  closeModalComponent({
+                    onClose: () => setModalVisibility(false),
+                  })
+                ) : (
+                  <Pressable onPress={() => setModalVisibility(false)}>
+                    <Text style={styles.closeModalText}>{closeModalText}</Text>
+                  </Pressable>
                 )}
-              </TouchableOpacity>
 
-              <TouchableOpacity onPress={handleCancel}>
-                <Text style={[styles.cancelModalText, cancelTextStyle]}>
-                  {cancelTouchableText}
-                </Text>
-              </TouchableOpacity>
-            </View>
+                {cancelModalComponent ? (
+                  cancelModalComponent({
+                    onCancel: handleCancel,
+                    text: cancelTouchableText,
+                  })
+                ) : (
+                  <Pressable onPress={handleCancel}>
+                    <Text style={styles.cancelModalText}>
+                      {cancelTouchableText}
+                    </Text>
+                  </Pressable>
+                )}
+              </View>
+            )}
           </SafeAreaView>
           {!items.length ? (
-            <EmptyIndicator>
-              <Text>{emptyIndicatorText}</Text>
-            </EmptyIndicator>
+            <>
+              {emptyIndicatorComponent ? (
+                emptyIndicatorComponent({
+                  text: emptyIndicatorText,
+                })
+              ) : (
+                <EmptyIndicator>
+                  <Text>{emptyIndicatorText}</Text>
+                </EmptyIndicator>
+              )}
+            </>
           ) : (
             <FlatList
               data={items}
               renderItem={(info) => {
-                const { item } = info;
+                const { item, index } = info;
                 return (
-                  <SelectItem
-                    key={item.value}
-                    selected={item.value === selectedItem?.value}
-                    onPress={() => handleChangeSelectedItem(item)}
-                    itemTouchableStyle={itemTouchableStyle}
-                    itemTextStyle={itemTextStyle}
-                    {...item}
-                  />
+                  <>
+                    {modalItemComponent ? (
+                      modalItemComponent({
+                        item,
+                        index,
+                        focused: selectedItem?.value === item.value,
+                        onSelect: () => handleChangeSelectedItem(item),
+                      })
+                    ) : (
+                      <SelectItem
+                        key={item.value}
+                        onPress={() => handleChangeSelectedItem(item)}
+                        {...item}
+                      />
+                    )}
+                  </>
                 );
               }}
             />
@@ -196,5 +158,30 @@ const ModalSelect = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  modal: {
+    flex: 1,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: 16,
+  },
+  closeModalText: {
+    fontSize: 16,
+  },
+  cancelModalText: {
+    fontSize: 16,
+  },
+  modalTitleContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    left: 0,
+    right: 0,
+  },
+});
 
 export default ModalSelect;

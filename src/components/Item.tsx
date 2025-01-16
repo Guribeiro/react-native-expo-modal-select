@@ -1,57 +1,16 @@
-import React, { useMemo } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableOpacityProps,
-} from 'react-native';
-import type { Item } from './ModalSelect';
-import type { StyleObj } from 'src/@types/StyleObj';
+import type { Item } from '@/types';
+import React from 'react';
+import { Pressable, type PressableProps, StyleSheet, Text } from 'react-native';
 
-export interface TouchableSelectItemProps extends Item, TouchableOpacityProps {
-  selected?: boolean;
-  itemTouchableStyle?: StyleObj & { selectedColor?: string };
-  itemTextStyle?: StyleObj & { selectedColor?: string };
-}
+export type TouchableSelectItemProps = Item & PressableProps;
 
-const SelectItem = ({
-  label,
-  selected,
-  itemTouchableStyle,
-  itemTextStyle,
-  ...rest
-}: TouchableSelectItemProps) => {
-  const itemTouchableStyleSheet = useMemo(() => {
-    return selected
-      ? [
-          styles.container,
-          itemTouchableStyle,
-          { backgroundColor: itemTouchableStyle?.selectedColor },
-        ]
-      : [styles.container, itemTouchableStyle];
-  }, [itemTouchableStyle, selected]);
-
-  const itemTextStyleSheet = useMemo(() => {
-    return selected
-      ? [
-          styles.textContainer,
-          itemTextStyle,
-          { color: itemTextStyle?.selectedColor },
-        ]
-      : [styles.textContainer, itemTextStyle];
-  }, [itemTextStyle, selected]);
-
+const SelectItem = ({ label, ...rest }: TouchableSelectItemProps) => {
   return (
-    <TouchableOpacity
-      style={[styles.container, itemTouchableStyleSheet]}
-      {...rest}
-    >
-      <Text style={[styles.textContainer, itemTextStyleSheet]}>{label}</Text>
-    </TouchableOpacity>
+    <Pressable style={styles.container} {...rest}>
+      <Text style={styles.label}>{label}</Text>
+    </Pressable>
   );
 };
-
-export default SelectItem;
 
 const styles = StyleSheet.create({
   container: {
@@ -62,7 +21,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#c1c1c1',
     borderStyle: 'solid',
   },
-  textContainer: {
+  label: {
     marginLeft: 8,
   },
 });
+
+export default SelectItem;

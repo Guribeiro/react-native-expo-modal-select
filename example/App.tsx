@@ -1,6 +1,6 @@
 import React from 'react';
-import Select from './src/Select';
+import Example from './src/examples/Advanced';
 
 export default function App() {
-  return <Select />;
+  return <Example />;
 }
